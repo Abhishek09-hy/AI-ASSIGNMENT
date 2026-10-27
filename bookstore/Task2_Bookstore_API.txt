@@ -1,0 +1,76 @@
+TASK 2: ONLINE BOOKSTORE REST API
+
+Implementation
+--------------
+The Flask REST API is implemented in the file named "api_2" in this folder.
+It manages an in-memory book inventory and returns book data as JSON.
+
+Endpoints
+---------
+GET /books
+    Returns the full inventory.
+
+GET /books/<id>
+    Returns one book by its numeric ID. Returns HTTP 404 with a JSON error
+    when that ID does not exist.
+
+POST /books
+    Adds a book. Send a JSON object with a non-empty "title", a non-empty
+    "author", and a non-negative numeric "price". Returns the created book
+    and HTTP 201. Invalid requests return HTTP 400 with a JSON error.
+
+Example POST body
+-----------------
+{
+  "title": "Dune",
+  "author": "Frank Herbert",
+  "price": 12.5
+}
+
+Example successful response
+---------------------------
+{
+  "id": 3,
+  "title": "Dune",
+  "author": "Frank Herbert",
+  "price": 12.5
+}
+
+Run the API
+-----------
+From the backend folder, run:
+
+    python backend_2\api_2
+
+The development server starts at http://127.0.0.1:5000.
+
+Try the endpoints
+-----------------
+Open http://127.0.0.1:5000/books in a browser to view the inventory.
+Use an API client or curl to request a specific book:
+
+    curl http://127.0.0.1:5000/books/1
+
+To add a book with curl:
+
+    curl -X POST http://127.0.0.1:5000/books -H "Content-Type: application/json" -d "{\"title\":\"Dune\",\"author\":\"Frank Herbert\",\"price\":12.5}"
+
+Review and improvement
+----------------------
+The API validates submitted book details and rejects invalid prices rather
+than accepting negative, boolean, or non-finite numeric values. It also
+returns a clear JSON 404 response when a requested book is not in inventory.
+
+Tests
+-----
+Automated endpoint tests are in "test_api_2.py". From the backend folder, run:
+
+    python -m unittest backend_2.test_api_2 -v
+
+The tests cover listing books, retrieving a book, handling a missing book,
+adding a book, and rejecting a negative price.
+
+Note
+----
+The inventory is stored in memory. Books added through POST are not retained
+after the server restarts.
